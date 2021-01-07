@@ -30,19 +30,25 @@ $(tput bold)USAGE$(tput sgr0)
 
 $(tput bold)OPTIONS$(tput sgr0)
   Suffix for FILES -- only one can be used
-    -b	$(tput bold).bak$(tput sgr0) [default]
-    -o	$(tput bold).old$(tput sgr0)
+    -b	.bak [default]
+    -o	.old
 
   Destination for clones
     -d	save the clones in DESTINATION
-       [default] is the current directory
+          [default] is same as source file
 
   Lightweight copies
     -0  create if possible [default]
+          reuse data blocks unless modified
     -1  force regular copies
+          copy data blocks completely
 
   Recursive clone
     -r  clone a directory and its contents
+
+  Help and Version
+    -h  display this help menu
+    -v  print version 
 HERE
 }
 
