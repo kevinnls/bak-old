@@ -14,11 +14,13 @@ the remainder at a version is rolled over to the next
         - did not need escaping. -e does not apply to `test` conditions
 
 ### documentation
-- [ ] `-d` has incorrect info
+- [x] `-d` has incorrect info
     - default is src dir
-- [ ] `-h` and `-v` are not mentioned
+- [x] `-h` and `-v` are not mentioned
+- [x] lightweight copy needs explanation
+    - fixed @ [48f5669](//github.com/kevinnls/bak-old/tree/48f5669511d1463347979f973cd72e2dd6ec988a)
 - [ ] formatting needs work
-- [ ] lightweight copy needs explanation
+
 
 ### functionality
 - [ ] heavily dependent on GNU coreutils - `realpath`
