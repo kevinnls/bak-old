@@ -9,7 +9,7 @@ the remainder at a version is rolled over to the next
 
 ### code
 - [ ] add `set -e` for entire script escaped by `set +e` where needed
-    - pointed out by @iammosespaulr
+    - pointed out by [@iammosespaulr](//github.com/iammosespaulr)
 
 ### documentation
 - [ ] `-d` has incorrect info
