@@ -8,8 +8,10 @@ the remainder at a version is rolled over to the next
     unless the item is dismissed altogether -->
 
 ### code
-- [ ] add `set -e` for entire script escaped by `set +e` where needed
+- [x] add `set -e` for entire script escaped by `set +e` where needed
     - pointed out by [@iammosespaulr](//github.com/iammosespaulr)
+    - fixed @ [6ac1dd3](//github.com/kevinnls/bak-old/tree/6ac1dd30e64bf90b091eaa3d0c1536fbc411b8dd)
+        - did not need escaping. -e does not apply to `test` conditions
 
 ### documentation
 - [ ] `-d` has incorrect info
