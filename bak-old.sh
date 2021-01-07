@@ -10,6 +10,9 @@ version='0.1.0-beta'
 ### IFS precautions	#
 OLDIFS="$IFS"
 unset IFS
+### error precautions
+set -e				
+#####################
 
 debug(){ ### function to call when $DEBUG is set
     set -xv
