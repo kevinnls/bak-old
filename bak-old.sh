@@ -11,7 +11,7 @@ version='0.1.0-beta'
 OLDIFS="$IFS"
 unset IFS
 ### error precautions
-set -e				
+set -e
 #####################
 
 debug(){ ### function to call when $DEBUG is set
@@ -48,7 +48,7 @@ $(tput bold)OPTIONS$(tput sgr0)
 
   Help and Version
     -h  display this help menu
-    -v  print version 
+    -v  print version
 HERE
 }
 
@@ -76,6 +76,16 @@ print_err(){
         *)
             echo "UNKNOWN ERROR"
     esac
+    tput sgr0
+    exit 1
+}
+
+print_err_deps(){
+    tput setaf 1
+    cat <<- EOF
+	${0##*/} has the following unmet dependencies:
+	${1/:/\\n}
+	EOF
     tput sgr0
     exit 1
 }
@@ -167,6 +177,23 @@ parse_combined(){
 ### enable debugging ###
 ${DEBUG+debug}       ###
 ### if $DEBUG is set ###
+
+###############################################################################
+# CHECKING DEPS
+##################
+deps=(realpath)
+
+for dep in $deps; do
+    if command -v "$dep"; then
+	continue
+    else
+	missing="${dep}:"
+    fi
+done
+
+if [[ -n ${missing} ]]; then
+    print_err_deps $missing
+fi
 
 ###############################################################################
 # SANITISING PARAMS AND OPTIONS
