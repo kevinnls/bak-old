@@ -180,23 +180,6 @@ ${DEBUG+debug}       ###
 ### if $DEBUG is set ###
 
 ###############################################################################
-# CHECKING DEPS
-##################
-deps=(realpath)
-
-for dep in $deps; do
-    if command -v "$dep"; then
-	continue
-    else
-	missing=":${dep}"
-    fi
-done
-
-if [[ -n ${missing} ]]; then
-    print_err_deps $missing
-fi
-
-###############################################################################
 # SANITISING PARAMS AND OPTIONS
 ##################################
 while [[ $# -gt 0 ]]; do
@@ -243,6 +226,23 @@ while [[ $# -gt 0 ]]; do
         ;;
     esac
 done
+
+###############################################################################
+# CHECKING DEPS
+##################
+deps=(realpath)
+
+for dep in $deps; do
+    if command -v "$dep"; then
+	continue
+    else
+	missing=":${dep}"
+    fi
+done
+
+if [[ -n ${missing} ]]; then
+    print_err_deps $missing
+fi
 
 
 ###############################################################################
