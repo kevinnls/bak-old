@@ -15,6 +15,7 @@ set -e
 #####################
 
 debug(){ ### function to call when $DEBUG is set
+
     set -xv
 }
 
@@ -83,8 +84,8 @@ print_err(){
 print_err_deps(){
     tput setaf 1
     cat <<- EOF
-	${0##*/} has the following unmet dependencies:
-	${1/:/\\n}
+	${0##*/} has the following unmet dependencies:${1/:/
+	  - }
 	EOF
     tput sgr0
     exit 1
@@ -187,7 +188,7 @@ for dep in $deps; do
     if command -v "$dep"; then
 	continue
     else
-	missing="${dep}:"
+	missing=":${dep}"
     fi
 done
 
