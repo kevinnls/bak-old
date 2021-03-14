@@ -23,8 +23,9 @@ the remainder at a version is rolled over to the next
 
 
 ### functionality
-- [ ] heavily dependent on GNU coreutils - `realpath`
+- [x] heavily dependent on GNU coreutils - `realpath`
     - unsatisfied dependency to be handled
+    - fixed @ [8883fbf](//github.com/kevinnls/bak-old/tree/8883fbf068fbd8cc1d21b87fe075f3845404ba03)
 - [ ] clone would overwrite existing .bak/.old
     - plan to rename existing file with ctime in suffix
 - [ ] installation/uninstallation/update capabilities pending
