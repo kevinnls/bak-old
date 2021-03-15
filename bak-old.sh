@@ -15,7 +15,6 @@ set -e
 #####################
 
 debug(){ ### function to call when $DEBUG is set
-
     set -xv
 }
 
@@ -175,9 +174,9 @@ parse_combined(){
     fi
 }
 
-### enable debugging ###
+### enable debugging if ###
 ${DEBUG+debug}       ###
-### if $DEBUG is set ###
+### $DEBUG is set ###
 
 ###############################################################################
 # SANITISING PARAMS AND OPTIONS
