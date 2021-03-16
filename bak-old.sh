@@ -25,6 +25,14 @@ txt_green='\e[32m'
 txt_yellow='\e[33m'
 txt_0='\e[0m'
 
+is_command(){
+    if { command -v "$1"; } >/dev/null 2>/dev/null; then
+        return 0
+    else
+        return 1
+    fi
+}
+
 ###############################################################################
 # f() FOR PRINTING PROMPTS
 #############################
@@ -188,6 +196,37 @@ ${DEBUG+debug}       ###
 ###############################################################################
 # SANITISING PARAMS AND OPTIONS
 ##################################
+if [[ "$1" == "--uninstall" ]]; then
+    install_locs=($(which -a bak-old.sh || echo ''))
+    echo "uninstalling script..."
+    echo
+    if [[ ${#install_locs[@]} -lt 1 ]]; then
+        echo -e "${txt_yellow}bak-old.sh installation not found in PATH${txt_0}"
+        exit 0
+    else
+        fail_count=0
+        set +e
+        for instance in "${install_locs[@]}"; do
+            rm -f $instance 2>/dev/null
+            if [[ $? -eq 0 ]]; then
+                echo -e "${txt_green}$instance deleted!${txt_0}"
+            else
+                fail_count=$(( fail_count + 1 ))
+                echo -e "${txt_red}$instance not deleted:${txt_0} try with sudo or as root"
+            fi
+        done
+        set -e
+        echo -e "${txt_bold}=========="
+        if [[ fail_count -eq 0 ]]; then
+            echo -e "${txt_green} bak-old.sh has been completely removed${txt_0}"
+            exit 0
+        else
+            echo -e "${txt_red} bak-old.sh not completely removed${txt_0}"
+            exit 1
+        fi
+    fi
+fi
+
 if [[ $# -eq 0 ]]; then
     print_usage
 fi
@@ -243,7 +282,7 @@ done
 deps=(realpath)
 
 for dep in $deps; do
-    if command -v "$dep" >/dev/null; then
+    if is_command "$dep" >/dev/null; then
         continue
     else
         missing=":${dep}"
