@@ -155,12 +155,10 @@ cleanup(){
 install(){
 	setup
 	find_dler
-	echo "$downloader"
 	find_dest_dir
-	echo "$dest_dir"
 	download
-	chmod 750 "$tmp_file_path"
-	mv "$tmp_file_path" "$dest_dir"
+	chmod 755 "$tmp_file_path"
+	mv "$tmp_file_path" "${dest_dir}/"
 	is_command bak-old.sh && install_success || install_failure
 }
 
