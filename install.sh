@@ -149,8 +149,10 @@ cleanup(){
 	# cleanup
 	cd "$HOME"
 	rm -rf "$work_dir"
-	exit $1
+	exit ${1-0}
 }
+
+trap "cleanup 1" SIGHUP SIGINT SIGTERM ERR
 
 install(){
 	setup
