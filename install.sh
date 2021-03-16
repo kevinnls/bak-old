@@ -36,6 +36,13 @@ is_command(){ ### function to check if a command exists
 	{ command -v $1;} >/dev/null && return 0 || return 1
 }
 
+# text formatting escape sequences
+txt_bold='\e[1m'
+txt_red='\e[31m'
+txt_green='\e[32m'
+txt_yellow='\e[33m'
+txt_0='\e[0m'
+
 err_no_downloader(){
 	cat <<- EOM
 	$(tput setaf 1; tput bold)ERR: missing dependencies$(tput sgr0)

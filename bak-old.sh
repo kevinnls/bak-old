@@ -18,6 +18,13 @@ debug(){ ### function to call when $DEBUG is set
     set -xv
 }
 
+# text formatting escape sequences
+txt_bold='\e[1m'
+txt_red='\e[31m'
+txt_green='\e[32m'
+txt_yellow='\e[33m'
+txt_0='\e[0m'
+
 ###############################################################################
 # f() FOR PRINTING PROMPTS
 #############################
