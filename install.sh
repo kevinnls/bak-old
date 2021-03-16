@@ -11,12 +11,13 @@ set -e
 
 VERSION='v0.1.0-beta'
 work_dir=/tmp/bak-old_installation/
+tmp_file_path="$work_dir/bak-old.sh"
 download_url="https://github.com/kevinnls/bak-old/releases/download/${VERSION}/bak-old.sh"
 
 # list of known downloaders and options for download
 declare -A dlers
-dlers[curl]="curl -fsSLO"
-dlers[wget]="wget -q"
+dlers[curl]="curl -fsSLRo $tmp_file_path"
+dlers[wget]="wget -qO $tmp_file_path"
 # list of possible destinations for root user
 r_dstdirs=('/usr/local/bin' 
 			'/usr/bin' 
@@ -44,8 +45,8 @@ txt_yellow='\e[33m'
 txt_0='\e[0m'
 
 err_no_downloader(){
-	cat <<- EOM
-	$(tput setaf 1; tput bold)ERR: missing dependencies$(tput sgr0)
+	echo -e "$(cat <<- EOM
+	${txt_bold}${txt_red}ERR: missing dependencies${txt_0}
 
 	required by this installation script:
 	    - wget OR curl
@@ -56,25 +57,49 @@ err_no_downloader(){
 	to a directory in your PATH
 
 	EOM
+	)"
 	exit 1
 }
 err_no_dest_in_path(){
-	cat <<-EOM
-	$(tput setaf 1; tput bold)ERR: no preconfigured destinations are in \
-	your PATH$(tput sgr0)
+	echo -e "$(cat <<-EOM
+	${txt_bold}${txt_red}ERR: no preconfigured destinations are in your PATH${txt_0}
 	check your PATH variable configuration
-	#or specify the destination with -d
+	or specify the destination with -d
 
 	EOM
+	)"
 	exit 1
 }
 err_no_home_dir(){
-	cat <<- EOM
-	$(tput setaf 1; tput bold)ERR: user $(whoami) does not have a valid home \
-	directory
+	echo -e "$(cat <<- EOM
+	${txt_bold}${txt_red}ERR: $(whoami) does not have a valid home directory${txt_0}
 
 	EOM
+	)"
 	exit 1
+}
+err_unknown(){
+	echo -e "$(cat <<-EOM
+	${txt_bold}${txt_red}ERR: some unhandled error has occurred${txt_0}
+	
+	EOM
+	)"
+	exit 1
+}
+install_success(){
+	echo -e "$(cat <<-EOM
+	${txt_bold}${txt_green}SUCCESS: bak-old.sh has been installed successfully${txt_0}
+	EOM
+	)"
+	bak-old.sh -h
+	exit 0
+}
+install_failure(){
+	echo -e "$(cat <<-EOM
+	${txt_bold}${txt_green}FAILUR: failed to install bak-old.sh :(${txt_0}
+	EOM
+	)"
+	exit 127
 }
 
 find_dler(){
@@ -93,8 +118,10 @@ find_dest_dir(){
 		dirlist=(${r_dstdirs[@]})
 	elif [[ -d "$HOME" ]]; then
 		dirlist=(${u_dstdirs[@]})
-	else
+	elif [[ ! -d "$HOME" ]]; then
 		err_no_home_dir
+	else
+		err_unknown
 	fi
 			
 	for dir in ${dirlist[@]}; do
@@ -105,6 +132,10 @@ find_dest_dir(){
 	done
 
 	[[ -z "$dest_dir" ]] && err_no_dest_in_path
+}
+
+download(){
+	$downloader $download_url
 }
 
 setup() {
@@ -118,15 +149,19 @@ cleanup(){
 	# cleanup
 	cd "$HOME"
 	rm -rf "$work_dir"
+	exit $1
 }
 
 install(){
 	setup
 	find_dler
-	echo $downloader
+	echo "$downloader"
 	find_dest_dir
-	echo $dest_dir
-	cleanup
+	echo "$dest_dir"
+	download
+	chmod 750 "$tmp_file_path"
+	mv "$tmp_file_path" "$dest_dir"
+	is_command bak-old.sh && install_success || install_failure
 }
 
 ### enable debugging if ###
