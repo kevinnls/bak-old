@@ -188,6 +188,10 @@ ${DEBUG+debug}       ###
 ###############################################################################
 # SANITISING PARAMS AND OPTIONS
 ##################################
+if [[ $# -eq 0 ]]; then
+    print_usage
+fi
+
 while [[ $# -gt 0 ]]; do
     case $1 in
     '-h' )
@@ -239,10 +243,10 @@ done
 deps=(realpath)
 
 for dep in $deps; do
-    if command -v "$dep"; then
-	continue
+    if command -v "$dep" >/dev/null; then
+        continue
     else
-	missing=":${dep}"
+        missing=":${dep}"
     fi
 done
 
