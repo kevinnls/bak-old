@@ -5,7 +5,7 @@
 #   - another Linux user tired of #
 #     type cp file file.bak       #
 ###################################
-version='0.1.0-beta'
+version='0.1.1-beta'
 
 ### IFS precautions	#
 OLDIFS="$IFS"
