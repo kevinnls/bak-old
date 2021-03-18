@@ -227,6 +227,21 @@ if [[ "$1" == "--uninstall" ]]; then
     fi
 fi
 
+if [[ "$1" == "--up" ]]; then
+    if is_command curl; then
+        downloader='curl -fsSL'
+    elif is_command wget; then
+        downloader='wget -qO-'
+    else
+        echo -e "${txt_red}${txt_bold}ERR: wget or curl required for upgrading bak-old.sh${txt_0}"
+    fi
+    latest_version="$(${downloader} 'https://api.github.com/repos/kevinnls/bak-old/releases/latest' | awk -F \" '/tag_name/ {print $(NF-1)}')"
+    download_url="https://github.com/kevinnls/bak-old/releases/download/${latest_version}/install.sh"
+
+    ${downloader} ${download_url} | bash
+    exit 0
+fi
+
 if [[ $# -eq 0 ]]; then
     print_usage
 fi
